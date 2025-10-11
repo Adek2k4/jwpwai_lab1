@@ -1,9 +1,11 @@
-const fs = require("fs");
-console.log("Początek skryptu.");
-fs.readFile('package.json', function (err, data) {
-if (err) return console.error(err);
-console.log(data.toString());
+const http = require('http');
+const hostname = '127.0.0.1';
+const port = 8888;
+const server = http.createServer(function(request, response) {
+    response.statusCode = 200;
+    response.setHeader('Content-Type', 'text/plain');
+    response.end('Witaj, z serwera node.js !\n');
 });
-console.log("Koniec skryptu.");
-// w tym przypadku odczyt pliku jest asynchroniczny
-// (nie blokuje dalszego wykonywania skryptu)
+server.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+});
