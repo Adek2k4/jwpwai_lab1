@@ -1,19 +1,23 @@
 {
   "name": "jwpwpi_lab1",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "description": "lab1",
+  "homepage": "https://github.com/Adek2k4/jwpwpi_lab1#readme",
+  "bugs": {
+    "url": "https://github.com/Adek2k4/jwpwpi_lab1/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Adek2k4/jwpwpi_lab1.git"
   },
-  "author": "Adrian Lewandowski",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Adek2k4/jwpwpi_lab1/issues"
+  "author": "Adrian Lewandowski",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "homepage": "https://github.com/Adek2k4/jwpwpi_lab1#readme"
+  "dependencies": {
+    "nodemon": "^3.1.10"
+  }
 }
