@@ -1,17 +1,15 @@
-const http = require('http');
-const path = require("path");
-const util = require("util");
-const v8 = require("v8");
+import stringWidth from 'string-width';
+import http from 'http';
+
 const hostname = '127.0.0.1';
 const port = 8888;
-const server = http.createServer((request, response) => {
+
+const server = http.createServer(function(request, response) {
     response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/plain');
-    response.end('Hello, from node.js serwer !\n');
+    response.setHeader('Content-Type', 'text/plain; charset=utf-8'); // <-- KLUCZOWE!
+    response.end("Szerokość '古a😂' to: " + stringWidth('古a😂') + ".\n"+"Moduł string-width zapewnia funkcję stringWidth(string)\nktóra oblicza szerokość podanego ciągu znaków.");
 });
+
 server.listen(port, hostname, () => {
-    util.log(v8.getHeapStatistics());
-    console.log(path.basename(__filename));
-    util.log(path.join(__dirname, 'uploads','images'));
-console.log(`Server running at http://${hostname}:${port}/`);
+    console.log(`Server running at http://${hostname}:${port}/`);
 });
