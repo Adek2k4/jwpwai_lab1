@@ -1,0 +1,17 @@
+doctype html
+html(lang="pl")
+  head
+    meta(charset="UTF-8")
+    meta(name="author" content="Adrian Lewandowski")
+    title= title
+    style.
+      body { font-family: Arial; margin: 20px; }
+      nav a { margin-right: 10px; }
+  body
+    nav
+      a(href="/") Strona główna
+      a(href="/about") O nas
+      a(href="/contact") Kontakt
+      a(href="/help") Pomoc
+    hr
+    block content
