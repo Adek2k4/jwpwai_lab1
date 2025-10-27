@@ -4,6 +4,7 @@ import Counter from './Counter';
 import InputTracker from './InputTracker';
 import LoginStatus from './LoginStatus';
 import TodoList from './TodoList';
+import LoginForm from './LoginForm';
 
 function App() {
 return (
@@ -17,6 +18,7 @@ return (
     <LoginStatus isLoggedIn={true} />
     <LoginStatus isLoggedIn={false} />
     <TodoList todos={['Nauczyć się Reacta', 'Zrobić zakupy', 'Pójść na spacer', 'Dostać piątkę z JWPWAI']} />
+    <LoginForm />
   </div>
 );
 }
