@@ -1,9 +1,11 @@
-import Hello from './Hello';
+import HelloWithProps from './Hello';
 
 function App() {
 return (
   <div>
-  <Hello />
+    <HelloWithProps name="Asia"/>
+    <HelloWithProps name="Kasia"/>
+    <HelloWithProps name="Basia"/>
   </div>
 );
 }
