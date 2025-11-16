@@ -8,6 +8,10 @@ function ScoreDisplay({ score }) {
     } else {
         message = <p>Super wynik! 😍</p>;
     }
-    return <div>{message}</div>;
+    return (
+        <div>
+            {message}
+        </div>
+    );
 }
 export default ScoreDisplay;
