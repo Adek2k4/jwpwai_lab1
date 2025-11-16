@@ -3,6 +3,7 @@ import ToggleDetails from './ToggleDetails';
 import ScoreDisplay from './ScoreDisplay';
 import TaskList from './TaskList';
 import UserList from './UserList'
+import TimerCounter from './TimerCounter';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
       <TaskList />
       <p>Zadanie 4:</p>
       <UserList/>
+      <p>Zadanie 5:</p>
+      <TimerCounter/>
     </div>
   );
 }
