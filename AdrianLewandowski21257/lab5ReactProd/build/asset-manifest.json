@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/css/main.f855e6bc.css",
-    "main.js": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/js/main.f27c1e5d.js",
+    "main.css": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/css/main.d2ed8ead.css",
+    "main.js": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/js/main.d3c4a830.js",
     "static/js/453.a97bd02d.chunk.js": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/js/453.a97bd02d.chunk.js",
     "static/media/kot.gif": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/media/kot.841fbe6b0978f18afbdb.gif",
     "index.html": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/index.html",
-    "main.f855e6bc.css.map": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/css/main.f855e6bc.css.map",
-    "main.f27c1e5d.js.map": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/js/main.f27c1e5d.js.map",
+    "main.d2ed8ead.css.map": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/css/main.d2ed8ead.css.map",
+    "main.d3c4a830.js.map": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/js/main.d3c4a830.js.map",
     "453.a97bd02d.chunk.js.map": "/jwpwai_lab1/AdrianLewandowski21257/lab5ReactProd/build/static/js/453.a97bd02d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.f27c1e5d.js"
+    "static/css/main.d2ed8ead.css",
+    "static/js/main.d3c4a830.js"
   ]
 }

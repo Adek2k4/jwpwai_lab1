@@ -15,14 +15,33 @@ function ThemeSwitcher() {
 
 function App() {
   return (
-    <div className="App">
-      <ClickCounter />
-      <PrimeCalculator />
-      <FormReducer />
-      <ThemeProvider>
-        <ThemeSwitcher />
-      </ThemeProvider>
-      <LayoutEffectExample />
+    <div className="App app-shell">
+      <main className="lab-page">
+        <div className="lab-grid">
+          <div className="lab-card">
+            <p>Zadanie 1:</p>
+            <ClickCounter />
+          </div>
+          <div className="lab-card">
+            <p>Zadanie 2:</p>
+            <PrimeCalculator />
+          </div>
+          <div className="lab-card">
+            <p>Zadanie 3:</p>
+            <FormReducer />
+          </div>
+          <div className="lab-card">
+            <p>Zadanie 4:</p>
+            <ThemeProvider>
+              <ThemeSwitcher />
+            </ThemeProvider>
+          </div>
+          <div className="lab-card">
+            <p>Zadanie 5:</p>
+            <LayoutEffectExample />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

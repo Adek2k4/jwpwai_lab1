@@ -13,33 +13,44 @@ import ChangeStyle from './ChangeStyle';
 
 function App() {
   return (
-    <div className="App">
-      <p>Zadanie 1:</p>
-      <ToggleDetails />
-      <p>Zadanie 2:</p>
-      <ScoreDisplay score={0} />
-      <ScoreDisplay score={75} />
-      <ScoreDisplay score={500} />
-      <p>Zadanie 3:</p>
-      <TaskList />
-      <p>Zadanie 4:</p>
-      <UserList/>
-      <p>Zadanie 5:</p>
-      <TimerCounter/>
-      
-      <h1>Komponenty:</h1>
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '5px',
-      }}>
-        <HandleClick />
-        <HandleMouseOver />
-        <ShowImage />
-        <LoadDataFromJson />
-        <UploadFile />
-        <ChangeStyle />
-      </div>
+    <div className="App app-shell">
+      <main className="lab-page">
+        <div className="lab-grid">
+          <div className="lab-card">
+            <p>Zadanie 1:</p>
+            <ToggleDetails />
+          </div>
+          <div className="lab-card">
+            <p>Zadanie 2:</p>
+            <ScoreDisplay score={0} />
+            <ScoreDisplay score={75} />
+            <ScoreDisplay score={500} />
+          </div>
+          <div className="lab-card">
+            <p>Zadanie 3:</p>
+            <TaskList />
+          </div>
+          <div className="lab-card">
+            <p>Zadanie 4:</p>
+            <UserList />
+          </div>
+          <div className="lab-card">
+            <p>Zadanie 5:</p>
+            <TimerCounter />
+          </div>
+          <div className="lab-card">
+            <h1>Komponenty:</h1>
+            <div className="component-grid">
+              <HandleClick />
+              <HandleMouseOver />
+              <ShowImage />
+              <LoadDataFromJson />
+              <UploadFile />
+              <ChangeStyle />
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
