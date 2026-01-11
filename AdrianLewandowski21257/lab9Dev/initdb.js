@@ -178,13 +178,6 @@ db.prepare(`
 `).run();
 
 async function initData() {
-  const existingMeals = db.prepare('SELECT COUNT(*) as count FROM meals').get();
-  
-  if (existingMeals.count > 0) {
-    console.log('Database already initialized, skipping...');
-    return;
-  }
-
   const stmt = db.prepare(`
       INSERT INTO meals VALUES (
          null,
@@ -201,8 +194,6 @@ async function initData() {
   for (const meal of dummyMeals) {
     stmt.run(meal);
   }
-  
-  console.log('Database initialized with dummy data');
 }
 
 initData();
