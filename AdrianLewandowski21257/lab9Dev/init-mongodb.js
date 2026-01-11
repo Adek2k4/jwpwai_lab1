@@ -1,11 +1,23 @@
-const sql = require('better-sqlite3');
-const db = sql('meals.db');
+const { MongoClient } = require('mongodb');
+const fs = require('fs').promises;
+const path = require('path');
+require('dotenv').config({ path: '.env' });
+
+const uri = process.env.MONGODB_URI;
+const dbName = process.env.MONGODB_DB || 'foodies';
+
+async function loadImageAsBase64(imagePath) {
+  const fullPath = path.join(__dirname, 'assets', imagePath);
+  const buffer = await fs.readFile(fullPath);
+  const mime = imagePath.endsWith('.png') ? 'image/png' : 'image/jpeg';
+  return `data:${mime};base64,${buffer.toString('base64')}`;
+}
 
 const dummyMeals = [
   {
     title: 'Juicy Cheese Burger',
     slug: 'juicy-cheese-burger',
-    image: '/images/burger.jpg',
+    imagePath: 'burger.jpg',
     summary:
       'A mouth-watering burger with a juicy beef patty and melted cheese, served in a soft bun.',
     instructions: `
@@ -27,7 +39,7 @@ const dummyMeals = [
   {
     title: 'Spicy Curry',
     slug: 'spicy-curry',
-    image: '/images/curry.jpg',
+    imagePath: 'curry.jpg',
     summary:
       'A rich and spicy curry, infused with exotic spices and creamy coconut milk.',
     instructions: `
@@ -52,7 +64,7 @@ const dummyMeals = [
   {
     title: 'Homemade Dumplings',
     slug: 'homemade-dumplings',
-    image: '/images/dumplings.jpg',
+    imagePath: 'dumplings.jpg',
     summary:
       'Tender dumplings filled with savory meat and vegetables, steamed to perfection.',
     instructions: `
@@ -74,7 +86,7 @@ const dummyMeals = [
   {
     title: 'Classic Mac n Cheese',
     slug: 'classic-mac-n-cheese',
-    image: '/images/macncheese.jpg',
+    imagePath: 'macncheese.jpg',
     summary:
       "Creamy and cheesy macaroni, a comforting classic that's always a crowd-pleaser.",
     instructions: `
@@ -99,7 +111,7 @@ const dummyMeals = [
   {
     title: 'Authentic Pizza',
     slug: 'authentic-pizza',
-    image: '/images/pizza.jpg',
+    imagePath: 'pizza.jpg',
     summary:
       'Hand-tossed pizza with a tangy tomato sauce, fresh toppings, and melted cheese.',
     instructions: `
@@ -121,7 +133,7 @@ const dummyMeals = [
   {
     title: 'Wiener Schnitzel',
     slug: 'wiener-schnitzel',
-    image: '/images/schnitzel.jpg',
+    imagePath: 'schnitzel.jpg',
     summary:
       'Crispy, golden-brown breaded veal cutlet, a classic Austrian dish.',
     instructions: `
@@ -132,30 +144,30 @@ const dummyMeals = [
          Coat each cutlet in flour, dip in beaten eggs, and then in breadcrumbs.
 
       3. Fry the schnitzel:
-      Heat oil in a pan and fry each schnitzel until golden brown on both sides.
+         Heat oil in a pan and fry each schnitzel until golden brown on both sides.
 
       4. Serve:
-      Serve hot with a slice of lemon and a side of potato salad or greens.
- `,
+         Serve hot with a slice of lemon and a side of potato salad or greens.
+    `,
     creator: 'Franz Huber',
     creator_email: 'franzhuber@example.com',
   },
   {
     title: 'Fresh Tomato Salad',
     slug: 'fresh-tomato-salad',
-    image: '/images/tomato-salad.jpg',
+    imagePath: 'tomato-salad.jpg',
     summary:
       'A light and refreshing salad with ripe tomatoes, fresh basil, and a tangy vinaigrette.',
     instructions: `
       1. Prepare the tomatoes:
-        Slice fresh tomatoes and arrange them on a plate.
-    
+         Slice fresh tomatoes and arrange them on a plate.
+
       2. Add herbs and seasoning:
          Sprinkle chopped basil, salt, and pepper over the tomatoes.
-    
+
       3. Dress the salad:
          Drizzle with olive oil and balsamic vinegar.
-    
+
       4. Serve:
          Enjoy this simple, flavorful salad as a side dish or light meal.
     `,
@@ -164,36 +176,42 @@ const dummyMeals = [
   },
 ];
 
-db.prepare(`
-   CREATE TABLE IF NOT EXISTS meals (
-       id INTEGER PRIMARY KEY AUTOINCREMENT,
-       slug TEXT NOT NULL UNIQUE,
-       title TEXT NOT NULL,
-       image TEXT NOT NULL,
-       summary TEXT NOT NULL,
-       instructions TEXT NOT NULL,
-       creator TEXT NOT NULL,
-       creator_email TEXT NOT NULL
-    )
-`).run();
+async function initMongoDB() {
+  const client = new MongoClient(uri);
 
-async function initData() {
-  const stmt = db.prepare(`
-      INSERT INTO meals VALUES (
-         null,
-         @slug,
-         @title,
-         @image,
-         @summary,
-         @instructions,
-         @creator,
-         @creator_email
-      )
-   `);
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
 
-  for (const meal of dummyMeals) {
-    stmt.run(meal);
+    const db = client.db(dbName);
+    const mealsCol = db.collection('meals');
+
+    const count = await mealsCol.countDocuments();
+    if (count > 0) {
+      console.log(`Database already contains ${count} meals, skipping initialization.`);
+      return;
+    }
+
+    // Load images and convert to base64
+    console.log('Loading images...');
+    const mealsWithImages = await Promise.all(
+      dummyMeals.map(async (meal) => ({
+        ...meal,
+        image: await loadImageAsBase64(meal.imagePath),
+      }))
+    );
+
+    // Remove imagePath field before inserting
+    const mealsToInsert = mealsWithImages.map(({ imagePath, ...meal }) => meal);
+
+    await mealsCol.insertMany(mealsToInsert);
+    console.log(`Inserted ${mealsToInsert.length} meals with base64 images into the database.`);
+  } catch (error) {
+    console.error('Error initializing MongoDB:', error);
+    process.exit(1);
+  } finally {
+    await client.close();
   }
 }
 
-initData();
+initMongoDB();

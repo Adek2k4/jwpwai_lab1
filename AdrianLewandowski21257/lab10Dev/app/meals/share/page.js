@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import classes from './page.module.css';
 
 export default function ShareMealPage() {
+  const router = useRouter();
   const formRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -48,9 +50,11 @@ export default function ShareMealPage() {
       if (!res.ok) {
         throw new Error(data.message || 'Saving failed');
       }
-      setStatus({ loading: false, message: 'Meal saved!' });
-      formRef.current?.reset();
-      setSelectedImage(null);
+      
+      // Redirect to the newly created meal page
+      if (data.slug) {
+        router.push(`/meals/${data.slug}`);
+      }
     } catch (err) {
       setStatus({ loading: false, message: err.message || 'Saving failed' });
     }

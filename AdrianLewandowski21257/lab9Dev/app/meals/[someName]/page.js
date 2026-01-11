@@ -4,7 +4,7 @@ import classes from './page.module.css';
 
 export default async function MealDetailsPage({ params }) {
   const slug = (await params)?.someName;
-  const meal = getMeal(slug);
+  const meal = await getMeal(slug);
 
   if (!meal) {
     notFound();

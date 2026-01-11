@@ -1,6 +1,4 @@
-import sql from 'better-sqlite3';
-
-const db = sql('meals.db');
+import { getMealsCollection } from './mongodb';
 
 function slugify(value) {
   return value
@@ -11,12 +9,14 @@ function slugify(value) {
     .replace(/-+/g, '-');
 }
 
-function buildSlug(title) {
-  const base = slugify(title || 'meal');
-  let slug = base || 'meal';
+async function buildUniqueSlug(title) {
+  const mealsCol = await getMealsCollection();
+  const base = slugify(title || 'meal') || 'meal';
+  let slug = base;
   let counter = 1;
 
-  while (db.prepare('SELECT 1 FROM meals WHERE slug = ?').get(slug)) {
+  // Loop until slug is unique in collection
+  while (await mealsCol.findOne({ slug }, { projection: { _id: 1 } })) {
     slug = `${base}-${counter}`;
     counter += 1;
   }
@@ -24,13 +24,20 @@ function buildSlug(title) {
   return slug;
 }
 
-export function createMeal({ title, summary, instructions, creator, creator_email, image }) {
-  const slug = buildSlug(title);
+export async function createMeal({ title, summary, instructions, creator, creator_email, image }) {
+  const mealsCol = await getMealsCollection();
+  const slug = await buildUniqueSlug(title);
 
-  db.prepare(
-    `INSERT INTO meals (slug, title, image, summary, instructions, creator, creator_email)
-     VALUES (@slug, @title, @image, @summary, @instructions, @creator, @creator_email)`
-  ).run({ slug, title, summary, instructions, creator, creator_email, image });
+  await mealsCol.insertOne({
+    slug,
+    title,
+    summary,
+    instructions,
+    creator,
+    creator_email,
+    image,
+    createdAt: new Date(),
+  });
 
   return slug;
 }

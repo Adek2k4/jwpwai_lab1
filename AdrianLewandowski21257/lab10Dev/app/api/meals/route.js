@@ -1,7 +1,4 @@
 import { NextResponse } from 'next/server';
-import { promises as fs } from 'fs';
-import path from 'path';
-import { randomUUID } from 'crypto';
 import { createMeal } from '@/lib/save-meal';
 
 function requiredString(value) {
@@ -32,19 +29,16 @@ export async function POST(request) {
       return NextResponse.json({ message: 'The uploaded image is empty.' }, { status: 400 });
     }
 
-    const ext = path.extname(imageFile.name || '').toLowerCase() || '.png';
-    const fileName = `${randomUUID()}${ext}`;
-    const targetPath = path.join(process.cwd(), 'public', 'images', fileName);
+    const mime = imageFile.type || 'image/png';
+    const base64Image = `data:${mime};base64,${buffer.toString('base64')}`;
 
-    await fs.writeFile(targetPath, buffer);
-
-    const slug = createMeal({
+    const slug = await createMeal({
       title,
       summary,
       instructions,
       creator,
       creator_email,
-      image: `/images/${fileName}`,
+      image: base64Image,
     });
 
     return NextResponse.json({ message: 'Meal saved', slug }, { status: 201 });
