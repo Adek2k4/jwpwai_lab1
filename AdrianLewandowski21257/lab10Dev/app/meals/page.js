@@ -4,6 +4,8 @@ import { getMeals } from '@/lib/meals';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
+export const revalidate = 5; // Odświeża cache co 5 sekund
+
 async function Meals(){
     const meals = await getMeals();
 
